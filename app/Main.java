@@ -45,11 +45,12 @@ public class Main extends javafx.application.Application {
 
 		//Elements
 		private Button btn			= new Button( "Seleccionar directorio" );
-		private Label label			= new Label( "Contenido directorio " );
+		private Label label			= new Label();
 		private Label results		= new Label(); //To show the results
 		private Hyperlink link_web  = new Hyperlink();
 		private Text feedback		= new Text(); //Shows the feedbacks with the results
 
+		private String str_for_label = "Contenido directorio ";
 		private final String VERSION = "0.1 - 07.03.2017";
 		private final String AUTHOR  = "http://www.ironwoods.es";
 
@@ -186,6 +187,8 @@ public class Main extends javafx.application.Application {
 				//Configs elements
 				link_web.setText( AUTHOR );
 				configFonts();
+				label.setText( str_for_label );
+
 				
 				//Elements not visible in the beginning
 				doVisibleElements( false );
@@ -201,7 +204,6 @@ public class Main extends javafx.application.Application {
 					feedback	//text
 				);
 			}
-
 
 			/**
 			 * Configs the fonts
@@ -240,7 +242,7 @@ public class Main extends javafx.application.Application {
 				String path = Files.getDirectoryPath();
 
 				label.setTextFill( Color.GREEN ); 
-				label.setText( label.getText() + "\n\"" + path  + "\":" );
+				label.setText( str_for_label + "\n\"" + path  + "\":" );
 			}
 
 		} //class
