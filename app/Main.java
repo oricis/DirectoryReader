@@ -65,7 +65,7 @@ public class Main extends javafx.application.Application {
 		/**
 		 * Main method
 		 *
-		 * @param args the command line arguments
+		 * @param      args the command line arguments
 		 */
 		public static void main( String[] args ) {
 			
@@ -87,6 +87,24 @@ public class Main extends javafx.application.Application {
 
 			//Shows the stage
 			primaryStage.show();
+		}
+
+		/**
+		 * Changes the App GUI
+		 *
+		 * @param      path   The dirpath for the search
+		 * @param      dirs   The dir names to show
+		 * @param      files  The file names to show
+		 */
+		private void changeGUI( String path, String dirs, String files ) {
+
+			btn.setText( "Ver otro directorio" ); //Changes button text
+			gui.doVisibleElements( true ); //Does visible the hidden elements
+			gui.setPath( path ); //Puts text with the directoy path in GUI
+			
+			//Sets content in the GUI
+			res_dirs.setText( dirs );
+			res_files.setText( files );
 		}
 
 
@@ -139,33 +157,37 @@ public class Main extends javafx.application.Application {
 				//Trace.ln( "Events / setFileNames()" );
 				String[] all_contents = Files.readDirectoryContent( stage );
 				String path = Files.getDirectoryPath();
-								
+
 				String[] dir_names  = ContentFilter.getDirectoryNames( path );
 				String[] file_names = ContentFilter.getFileNames( path );
 
-				if ( file_names != null ) {
-					gui.setPath();  //Puts text with the directoy path in GUI
+				String files = "";
+				String dirs  = "";
 
-					//Changes button text
-					btn.setText( "Ver otro directorio" );
-
-					//Does visible the hidden elements
-					gui.doVisibleElements( true );
-
-					String dirs = "";
+				if ( dir_names != null ) {
+					
 					for ( String dir_name : dir_names ) {
+
 						dirs = dirs + dir_name + "\n";
 					}
 
-					String files = "";
+				} else
+					dirs = "Sin resultados";
+
+
+				if ( file_names != null ) {
+					
 					for ( String file_name : file_names ) {
+
 						files = files + file_name + "\n";
 					}
 
-					//Sets content in the GUI
-					res_dirs.setText( dirs );
-					res_files.setText( files );
-				}
+				} else
+					files = "Sin resultados";
+
+
+				//Shows results from the search
+				changeGUI( path, dirs, files );
 			}
 
 		} //class
@@ -251,6 +273,7 @@ public class Main extends javafx.application.Application {
 			/**
 			 * Shows / hiddens the layout elements (hidden in the beginnig)
 			 * 
+			 *  @param 	x -> indicates if the elements will be visible or not
 			 */
 			private void doVisibleElements( boolean x ) {
 				//Trace.ln( "DirectoryReader / doVisibleElements()" );
@@ -266,9 +289,9 @@ public class Main extends javafx.application.Application {
 			/**
 			 * Shows the directory path in the GUI
 			 * 
+			 * @param 	path
 			 */
-			private void setPath() {
-				String path = Files.getDirectoryPath();
+			private void setPath( String path ) {
 
 				label.setText( str_for_label + "\n\"" + path  + "\":" );
 			}

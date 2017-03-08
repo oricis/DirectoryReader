@@ -32,23 +32,8 @@ public class ContentFilter {
 		 */
 		public static String[] getDirectoryNames( String path ) {
 			//Trace.ln( "ContentFilter / getDirectories()" );
-
-			File directory = new File( path );
-
-			File[] arr_content = directory.listFiles();
-			int len = arr_content.length;
-
-			List<String> res = new ArrayList<>();
-
-			for ( int i = 0; i < len; i ++ ) {
-				
-				if ( arr_content[ i ].isDirectory( ))
-					res.add( arr_content[ i ].getName( ));
-			}
-			String[] arr_res = res.toArray( new String[ 0 ] );
 			
-			
-			return arr_res;
+			return getNames( path, "directories" );
 		}
 
 		/**
@@ -60,7 +45,21 @@ public class ContentFilter {
 		public static String[] getFileNames( String path ) {
 			//Trace.ln( "ContentFilter / getFiles()" );
 
-			File directory = new File( path );
+			return getNames( path, "files" );
+		}
+
+		/**
+		 * Gets the names for files / directories
+		 *
+		 * @param      path  The path
+		 * @param      type  The type to return
+		 * @return     The names
+		 */
+		private static String[] getNames( String path, String type ) {
+			//Trace.ln( "ContentFilter / getNames()" );
+			//
+			String[] arr_res = null;
+			File directory 	 = new File( path );
 
 			File[] arr_content = directory.listFiles();
 			int len = arr_content.length;
@@ -69,10 +68,14 @@ public class ContentFilter {
 
 			for ( int i = 0; i < len; i ++ ) {
 				
-				if ( arr_content[ i ].isFile( ))
+				if ( type.equals( "directories" ) && arr_content[ i ].isDirectory( ))
+					res.add( arr_content[ i ].getName( ));
+
+				if ( type.equals( "files" ) && arr_content[ i ].isFile( ))
 					res.add( arr_content[ i ].getName( ));
 			}
-			String[] arr_res = res.toArray( new String[ 0 ] );
+			if ( res.size() > 0 )
+				arr_res = res.toArray( new String[ 0 ] );
 			
 			
 			return arr_res;
