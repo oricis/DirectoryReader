@@ -105,6 +105,10 @@ public class Main extends javafx.application.Application {
 			//Sets content in the GUI
 			res_dirs.setText( dirs );
 			res_files.setText( files );
+
+
+			Trace.ln( "Directorios: \n" + dirs );
+			Trace.ln( "Ficheros: \n" + files );
 		}
 
 
@@ -124,7 +128,7 @@ public class Main extends javafx.application.Application {
 				});
 
 				btn.setOnAction( e -> {
-					setFileNames();
+					showResults();
 				});
 			}
 
@@ -153,13 +157,13 @@ public class Main extends javafx.application.Application {
 			 * Shows hidden elements
 			 * 
 			 */
-			private void setFileNames() {
-				//Trace.ln( "Events / setFileNames()" );
+			private void showResults() {
+				//Trace.ln( "Events / showResults()" );
 				String[] all_contents = Files.readDirectoryContent( stage );
 				String path = Files.getDirectoryPath();
 
 				String[] dir_names  = ContentFilter.getDirectoryNames( path );
-				String[] file_names = ContentFilter.getFileNames( path );
+				String[] file_names = ContentFilter.getFileNames( path, true );
 
 				String files = "";
 				String dirs  = "";
