@@ -9,6 +9,8 @@ package app.helpers;
 //imports
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
@@ -60,7 +62,41 @@ public class Files {
 		}
 
 		/**
-		 * Reads a directory content
+		 * Reads a directory content and returns absolute file paths
+		 *
+		 * @return  	String[]
+		 */
+		public static String[] readFilesFrom( String dir_path ) {
+			
+			String[] arr_res = null;
+
+			File f = new File( dir_path );
+
+			if ( f.isDirectory( )) {
+
+				List<String> res   = new ArrayList<>();
+				File[] arr_content = f.listFiles();
+
+				int size = arr_content.length;
+
+				for ( int i = 0; i < size; i ++ ) {
+					
+					if ( arr_content[ i ].isFile( ))
+					res.add( arr_content[ i ].toString( ));
+				}
+				
+
+				arr_res = res.toArray( new String[ 0 ] );
+
+			} else
+				System.err.println( "¡ Path NO válido !" );
+
+
+			return arr_res;
+		}
+
+		/**
+		 * Reads a directory content and returns file names
 		 *
 		 * @return  	String[]
 		 */
