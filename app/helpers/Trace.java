@@ -53,7 +53,29 @@ public class Trace {
 			//System.exit( 0 );
 		}
 
-		
+		/**
+		 * Prints the strings stored into an array 
+		 * 
+		 * @param 	arr_strs
+		 */
+		public static void strArray( String[] arr_strs, String msg ) {
+			System.out.println( "Trace / strArray()" );
+
+			System.out.println( msg );
+
+
+			int len = arr_strs.length;
+			String str;
+
+			for ( int i = 0; i < len; i++ ) {
+
+				str = arr_strs[i];
+				System.out.println( str );
+			}
+			System.out.println( "-------------------------" );
+			//System.exit( 0 );
+		}
+                
 	/**********************************/
 	/*** Internal classes *************/
 
