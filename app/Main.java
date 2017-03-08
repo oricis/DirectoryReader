@@ -23,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 
+import app.helpers.ContentFilter;
 import app.helpers.Files;
 import app.helpers.Trace;
 
@@ -46,7 +47,10 @@ public class Main extends javafx.application.Application {
 		//Elements
 		private Button btn			= new Button( "Seleccionar directorio" );
 		private Label label			= new Label();
-		private Label results		= new Label(); //To show the results
+		private Label label_dirs	= new Label( "Directorios:" );
+		private Label label_files	= new Label( "Ficheros:");
+		private Label res_dirs		= new Label();
+		private Label res_files		= new Label();
 		private Hyperlink link_web  = new Hyperlink();
 		private Text feedback		= new Text(); //Shows the feedbacks with the results
 
@@ -90,9 +94,6 @@ public class Main extends javafx.application.Application {
 	/*** Internal classes *************/
 
 		class Events {
-			
-			private String[] file_names = null;
-
 
 			/**
 			 * Configs the events
@@ -136,8 +137,11 @@ public class Main extends javafx.application.Application {
 			 */
 			private void setFileNames() {
 				//Trace.ln( "Events / setFileNames()" );
-
-				file_names = Files.readDirectoryContent( stage );
+				String[] all_contents = Files.readDirectoryContent( stage );
+				String path = Files.getDirectoryPath();
+								
+				String[] dir_names  = ContentFilter.getDirectoryNames( path );
+				String[] file_names = ContentFilter.getFileNames( path );
 
 				if ( file_names != null ) {
 					gui.setPath();  //Puts text with the directoy path in GUI
@@ -148,13 +152,19 @@ public class Main extends javafx.application.Application {
 					//Does visible the hidden elements
 					gui.doVisibleElements( true );
 
-					String res = "";
-					for ( int i = 0; i < file_names.length; i++ ) {
-
-						res = res + " ---> " + file_names[ i ] + "\n";
+					String dirs = "";
+					for ( String dir_name : dir_names ) {
+						dirs = dirs + dir_name + "\n";
 					}
 
-					results.setText( res );
+					String files = "";
+					for ( String file_name : file_names ) {
+						files = files + file_name + "\n";
+					}
+
+					//Sets content in the GUI
+					res_dirs.setText( dirs );
+					res_files.setText( files );
 				}
 			}
 
@@ -200,7 +210,10 @@ public class Main extends javafx.application.Application {
 				layout.getChildren().addAll( 
 					btn,		//button
 					label,		//text
-					results,	//text
+					label_dirs,	//text
+					res_dirs,	//text
+					label_files,	//text
+					res_files,	//text
 					feedback	//text
 				);
 			}
@@ -217,9 +230,22 @@ public class Main extends javafx.application.Application {
 				label.setFont(  
 					Font.font( "Tahoma", FontWeight.NORMAL, 15 ) 
 				);
-				results.setFont(  
+				label_dirs.setFont(  
 					Font.font( "Tahoma", FontWeight.NORMAL, 15 ) 
 				);
+				label_files.setFont(  
+					Font.font( "Tahoma", FontWeight.NORMAL, 15 ) 
+				);
+				res_dirs.setFont(  
+					Font.font( "Tahoma", FontWeight.NORMAL, 15 ) 
+				);
+				res_files.setFont(  
+					Font.font( "Tahoma", FontWeight.NORMAL, 15 ) 
+				);
+
+				label.setTextFill( Color.GREEN );
+				label_dirs.setTextFill( Color.BLUE );
+				label_files.setTextFill( Color.BLUE );
 			}
 
 			/**
@@ -229,9 +255,12 @@ public class Main extends javafx.application.Application {
 			private void doVisibleElements( boolean x ) {
 				//Trace.ln( "DirectoryReader / doVisibleElements()" );
 
-				feedback.setVisible( x );
-				label.setVisible(	 x );
-				results.setVisible(	 x );
+				feedback.setVisible(  x );
+				label.setVisible( x );
+				label_dirs.setVisible( x );
+				label_files.setVisible( x );
+				res_dirs.setVisible( x );
+				res_files.setVisible( x );
 			}
 
 			/**
@@ -241,7 +270,6 @@ public class Main extends javafx.application.Application {
 			private void setPath() {
 				String path = Files.getDirectoryPath();
 
-				label.setTextFill( Color.GREEN ); 
 				label.setText( str_for_label + "\n\"" + path  + "\":" );
 			}
 
